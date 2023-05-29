@@ -57,7 +57,73 @@ export default function SignInPage() {
     //   username: data.get('username'),
     //   password: data.get('password'),
     // });
+
   };
+
+  const handleTest = async (event) => {
+        const user = {
+          "email" : "user1@gmail.com",
+          "password" : "iniuser1"
+        }
+    
+      //POST LOGIN
+      // await fetch(
+      //   "https://api-swalayan-brbk6zo3cq-as.a.run.app/login",
+      //   {
+      //     method:'POST',
+      //     body: JSON.stringify(user) ,
+      //     headers: {
+      //       'Accept': '*/*',
+      //       'Content-Type': 'application/json',
+      //     },
+      //   }      
+      // ).then(response=>response.json().then(
+      //   (data) => {
+      //         console.log(data);
+      //     })
+      // ).catch(err => {console.log(err)})
+
+          //POST LOGIN
+          // await fetch(
+          //   'https://flask-web-klien-brbk6zo3cq-uc.a.run.app/index',
+          //   {
+          //     method:'GET',
+          //     // body: user,
+          //     headers: {
+          //       'Content-Type': 'application/json',
+          //     },
+          //   }      
+          // ).then(response=>response.json()
+          // .then(
+          //   (data) => {
+          //         console.log(data);
+          //     })
+          // )
+
+          try {
+            const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/login", {
+              method: "POST",
+              body: JSON.stringify(user),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+        
+            if (response.ok) {
+              const result = await response.json();
+              console.log(result.user_id);
+              // setAllPosts(result.data.reverse());
+            }
+          } catch (err) {
+            alert(err);
+          } finally {
+            // setLoading(false);
+          }
+          
+
+
+  }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -66,7 +132,14 @@ export default function SignInPage() {
           {/* <KasirSideBar>
           </KasirSideBar> */}
 
-          
+              <Button
+                onClick={handleTest}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                TEST ENDPOINT
+              </Button>
           <Box
             sx={{
               marginTop: 8,

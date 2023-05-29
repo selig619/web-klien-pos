@@ -13,18 +13,84 @@ export default function AnalyticsPage() {
 
   const [metric, setMetric] = useState("")
   const [support, setSupport] = useState()
-  const [metricValue, setmetricValue] = useState("")
+  const [metricValue, setmetricValue] = useState()
+  const [token, setToken] = useState("")
   
   const [file, setFile] = useState()
+  // const handleFile = async (event) => {
+  //   setFile(event.target.files[0])
+  //   console.log(event.target.files[0])
+  // };
 
-  const handleMetriChange = async (event) => {
+  const handleUpload = async (event) => {
+    event.preventDefault();
+
+    // console.log('support',support)
+    // console.log('metric',metric)
+    // console.log('metricValue',metricValue)
+    // console.log(token);
+    // console.log(file);
+
+    const formData = new FormData()
+    formData.append('file',file)
+    formData.append('name','supermarket 1')
+    formData.append('method','apriori')
+    formData.append('minSupp',support)
+    formData.append('metric',metric)
+    formData.append('metric_value',metricValue)
+
+    for (var [key, value] of formData.entries()){
+      console.log(key,value);
+    }
+
+    // console.log(formData);
+
+    //GET ARM
+    // fetch(
+    //   'https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv',
+    //   {
+    //     method:'POST',
+    //     body: formData,
+    //     headers: {
+    //       'Accept': '*/*',
+    //       'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+    //       'authorization' : token
+    //     },
+    //   }      
+    // ).then(response=>response.json().then(
+    //   (data) => {
+    //         console.log(data);
+    //     })
+    // ).catch(err => {console.log(err)})
+
+    try {
+      const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
+      // const response = await fetch("http://localhost:5000/arm-csv", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': '*/*',
+          'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+          'authorization' : token
+        },
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        // setAllPosts(result.data.reverse());
+      }
+    } catch (err) {
+      alert(err);
+    } finally {
+      // setLoading(false);
+    }
+
+
 
   };
 
-  const handleFile = async (event) => {
-    setFile(event.target.files[0])
-    console.log(event.target.files[0])
-  };
+
 
 
   return (
@@ -54,6 +120,7 @@ export default function AnalyticsPage() {
                   label="Support"
                   name="support"
                   autoFocus
+                  onChange={e => setSupport(e.target.value)}
                 />
               </Stack>
             </Grid>
@@ -78,10 +145,27 @@ export default function AnalyticsPage() {
                   label="Metric"
                   name="metric"
                   autoFocus
+                  onChange={e => setmetricValue(e.target.value)}
                 />
               </Stack>
             </Grid>
 
+            <Grid item p={5} sx={{ border:'1px solid' ,m:'auto', width:'100%' }} justifyContent={'center'}>
+              {/* <Stack direction='row' justifyContent={'center'} spacing={4}> */}
+                <TextField sx={{ my: 'auto', mx:'auto', width:'90%' }}
+                  margin="normal"
+                  required
+                  size='small'
+                  id="token"
+                  label="token"
+                  name="token"
+                  autoFocus
+                  onChange={e => setToken(e.target.value)}
+                />
+              {/* </Stack> */}
+            </Grid>
+
+            {/*  FILEEEEEEEEEEEEEEEEEEEEEEEEEE */}
             <Grid item  xs={12} sx={{ border:'1px solid', p:4 }}>
               {/* <div style={{margin:'auto', border:'1px solid'}}> */}
                 <input style={{marginLeft:'25%'}}
@@ -92,7 +176,7 @@ export default function AnalyticsPage() {
                   multiple
                   type="file"
                   name='file'
-                  onChange={handleFile}
+                  onChange={e => setFile(e.target.files[0])}
                 />
                 {/* <label htmlFor="raised-button-file">
                   <Button variant="contained" component="span" >
@@ -106,13 +190,27 @@ export default function AnalyticsPage() {
             <Grid item m="auto" sx={{ border:'0px solid', p:4 }}>
               <Button justifyContent={'center'}
                 variant="contained"
+                onClick={handleUpload}
               >
                 Apply
               </Button>
             </Grid>
           </Grid>
 
-          <MyDataGrid></MyDataGrid>
+          <MyDataGrid
+            rows={[
+              {'id':'aaa','umur':12},{'id':'bbbb','umur':54}
+            ]}
+            columns={[
+              {field : 'id', headerName: "ID"},
+              {field : 'umur', headerName: "Umur"},
+              
+            ]
+
+            }
+          >
+
+          </MyDataGrid>
 
 
         </div>
