@@ -61,10 +61,10 @@ export default function SignInPage() {
   };
 
   const handleTest = async (event) => {
-        const user = {
-          "email" : "user1@gmail.com",
-          "password" : "iniuser1"
-        }
+        // const user = {
+        //   "email" : "user1@gmail.com",
+        //   "password" : "iniuser1"
+        // }
     
       //POST LOGIN
       // await fetch(
