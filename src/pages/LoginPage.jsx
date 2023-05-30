@@ -61,10 +61,10 @@ export default function SignInPage() {
   };
 
   const handleTest = async (event) => {
-        // const user = {
-        //   "email" : "user1@gmail.com",
-        //   "password" : "iniuser1"
-        // }
+        const user = {
+          "email" : "user1@gmail.com",
+          "password" : "iniuser1"
+        }
     
       //POST LOGIN
       // await fetch(
@@ -138,7 +138,7 @@ export default function SignInPage() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                TEST ENDPOINT SEKARANGGGGGGGGGGGGGGG
+                TEST ENDPOINT SEKARANGGGGGGGGGGG
               </Button>
           <Box
             sx={{
