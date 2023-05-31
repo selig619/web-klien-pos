@@ -110,12 +110,37 @@ export default function AdminSideBar() {
           </ListItem>
         </List>
         <List>
-          <ListItem key={'analytics'} disablePadding>
-            <ListItemButton onClick={()=> navigate("/analytics")}>
-              <ListItemText primary={'Analytics'} />
+          <ListItem key={'mba'} disablePadding>
+            <ListItemButton onClick={()=> navigate("/mba")}>
+              <ListItemText primary={'Market Basket Analysis'} />
             </ListItemButton>
           </ListItem>
         </List>
+        <List>
+          <ListItem key={'clustering'} disablePadding>
+            <ListItemButton onClick={()=> navigate("/clustering")}>
+              <ListItemText primary={'Clustering'} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem key={'kasir'} disablePadding>
+            <ListItemButton onClick={()=> navigate("/kasir")}>
+              <ListItemText primary={'Kasir'} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem key={'logout'} disablePadding>
+            <ListItemButton onClick={()=>{
+              localStorage.clear();
+              navigate("/login")
+            } }>
+              <ListItemText primary={'Logout'} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+          
 
 
       </Drawer>

@@ -13,47 +13,15 @@ export default function TransaksiPage() {
   // alert('adad');
 
   const [metric, setMetric] = useState("")
-  const [support, setSupport] = useState()
-  const [metricValue, setmetricValue] = useState()
-  const [token, setToken] = useState("")
+
+  // SIMPLE GETTT
+  fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/transaksi')
+  .then(res => res.json())
+  .then(data => {
+      console.log(data);
+  })
+  .catch(err => console.log(err))
   
-  const [file, setFile] = useState()
-
-  // const handleUpload = async (event) => {
-  //   event.preventDefault();
-
-    // try {
-    //   // const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
-    //   const response =  fetch("https://flask-web-klien-brbk6zo3cq-uc.a.run.app/transaksi", {
-    //     method: "GET"
-    //   });
-  
-    //   if (response.ok) {
-    //     const result =  response.json();
-    //     console.log(result);
-    //     // setAllPosts(result.data.reverse());
-    //   }
-    // } catch (err) {
-    //   alert(err);
-    // } finally {
-    //   // setLoading(false);
-    // }
-
-    // SIMPLE GETTT
-    fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/transaksi')
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
-    })
-    .catch(err => console.log(err))
-
-
-
-  // };
-
-
-
-
   return (
 
     <Box

@@ -109,6 +109,16 @@ export default function KasirSideBar() {
             </ListItemButton>
           </ListItem>
         </List>
+        <List>
+          <ListItem key={'logout'} disablePadding>
+            <ListItemButton onClick={()=>{
+              localStorage.clear();
+              navigate("/login")
+            } }>
+              <ListItemText primary={'Logout'} />
+            </ListItemButton>
+          </ListItem>
+        </List>
 
 
       </Drawer>

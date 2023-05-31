@@ -6,10 +6,7 @@ import {Typography, Container, Stack, TextField, Select, MenuItem, Button, Grid}
 
 import Box from '@mui/material/Box';
 
-
-
-
-export default function AnalyticsPage() {
+export default function AnalyticsMBAPage() {
 
   const [metric, setMetric] = useState("")
   const [support, setSupport] = useState()
@@ -32,12 +29,16 @@ export default function AnalyticsPage() {
     // console.log(file);
 
     const formData = new FormData()
+    // formData.append('file',file)
+    // formData.append('name','supermarket 1')
+    // formData.append('method','apriori')
+    // formData.append('minSupp',support)
+    // formData.append('metric',metric)
+    // formData.append('metric_value',metricValue)
+
     formData.append('file',file)
-    formData.append('name','supermarket 1')
-    formData.append('method','apriori')
-    formData.append('minSupp',support)
-    formData.append('metric',metric)
-    formData.append('metric_value',metricValue)
+    formData.append('nama','supermarket 1')
+    formData.append('umur',22)
 
     for (var [key, value] of formData.entries()){
       console.log(key,value);
@@ -64,14 +65,14 @@ export default function AnalyticsPage() {
     // ).catch(err => {console.log(err)})
 
     try {
-      const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
-      // const response = await fetch("http://localhost:5000/arm-csv", {
+      // const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
+      const response = await fetch("http://localhost:5000/test-post", {
         method: "POST",
         body: formData,
         headers: {
           'Accept': '*/*',
-          'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
-          'authorization' : token
+          'Content-Type': 'multipart/form-data',
+          // 'authorization' : token
         },
       });
   
@@ -94,13 +95,16 @@ export default function AnalyticsPage() {
 
 
   return (
-
+<>
+{/* <Box sx={{width:1/2}}> */}
+  <AdminSideBar>
+  </AdminSideBar>
+{/* </Box> */}
+  
     <Box
     sx={{ bgcolor: '', ml: 35, mt:2, border:'2px solid'  }}>        
       {/* <Container component="main" maxWidth="lg"> */}
 
-        <AdminSideBar>        
-        </AdminSideBar>
         <Typography component="h1" variant="h5" align='center'>
           Analytics
         </Typography>
@@ -216,6 +220,6 @@ export default function AnalyticsPage() {
         </div>
 
     </Box>
-
+</>
   )
 }
