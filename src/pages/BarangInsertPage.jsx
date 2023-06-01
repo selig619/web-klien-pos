@@ -1,24 +1,61 @@
 import {useState, useEffect} from 'react';
 
 import AdminSideBar from '../layouts/AdminSideBar';
-import MyDataGrid from '../layouts/MyDataGrid';
-import {Box, Typography, Container, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
-
-
+import { useNavigate } from 'react-router-dom';
+import {Box, Typography, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 
 
 export default function BarangInsertPage() {
-  // alert('adad');
+  const navigate = useNavigate();
 
-  const [metric, setMetric] = useState("")
+  const [nama, setNama] = useState('');
+  const [stok, setStok] = useState('');
+  const [hargaJual, setHargaJual] = useState('');
+  const [hargaPokok, setHargaPokok] = useState('');
 
-  // SIMPLE GETTT
-  fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/transaksi')
-  .then(res => res.json())
-  .then(data => {
-      console.log(data);
-  })
-  .catch(err => console.log(err))
+  const handleNamaChange = (event) => {
+    setNama(event.target.value);
+  };
+  const handleStokChange = (event) => {
+    setStok(event.target.value);
+  };
+  const handleHargaJualChange = (event) => {
+    setHargaJual(event.target.value);
+  };
+  const handleHargaPokokChange = (event) => {
+    setHargaPokok(event.target.value);
+  };
+
+  
+  const handleAddBarang = async () => {
+    try {
+      const newItem = {
+        nama_barang: nama,
+        stock_barang: stok,
+        harga_pokok: hargaPokok,
+        harga_jual: hargaJual
+      };
+      await fetch('http://localhost:5000/barang', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newItem),
+      });
+      // reset input
+      setNama('');
+      setStok('');
+      setHargaJual('');
+      setHargaPokok('');
+      // setOpenDialog(false);
+      alert('Item added successfully!');      
+      navigate(-1)
+    } catch (error) {
+      console.log('Error adding item:', error);
+      // setOpenDialog(false);
+      alert('Error adding item. Please try again.');
+    }
+  };
   
   return (
   <>        
@@ -42,49 +79,44 @@ export default function BarangInsertPage() {
                 required
                 fullWidth
                 id="nama"
-                label="nama"
+                label="Nama"
                 name="nama"
-                autoComplete="nama"
                 autoFocus
-                value={metric}
+                value={nama}
+                onChange={handleNamaChange}
               />
             <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="stok"
-                label="stok"
+                label="Stok"
                 name="stok"
-                autoComplete="stok"
-                autoFocus
-                value={metric}
+                value={stok}
+                onChange={handleStokChange}
               />
             <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="harga-pokok"
-                label="harga-pokok"
+                label="Harga Pokok"
                 name="harga-pokok"
-                autoComplete="harga-pokok"
-                autoFocus
-                value={metric}
+                value={hargaPokok}
+                onChange={handleHargaPokokChange}
               />
               <TextField
                   margin="normal"
                   required
                   fullWidth
                   id="harga-jual"
-                  label="harga-jual"
-                  name="harga-jual"
-                  autoComplete="harga-jual"
-                  autoFocus
-                  value={metric}
+                  label="Harga Jual"
+                  name="harga-jual"                  
+                  value={hargaJual}
+                  onChange={handleHargaJualChange}
                 />
               <Button
-                onClick={()=>{
-
-                }}              
+                onClick={handleAddBarang}              
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >

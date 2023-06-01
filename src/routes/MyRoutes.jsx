@@ -19,8 +19,8 @@ export default function MyRoutes() {
                 <Route path="/transaksi" element={<TransaksiPage/>} />
                 <Route path="/laporan" element={<LaporanPage/>} />
                 <Route path="/barang" element={<BarangPage/>} />
-                <Route path="/add-barang" element={<BarangInsertPage/>} />
-                <Route path="/update-barang" element={<BarangUpdatePage/>} />
+                <Route path="add-barang" element={<BarangInsertPage/>} />
+                <Route path="/barang/update-barang" element={<BarangUpdatePage/>} />
                 <Route path="/mba" element={<AnalyticsMBAPage/>} />
                 <Route path="/clustering" element={<AnalyticsClusteringPage/>} />
                 <Route path="/kasir" element={<KasirPage/>} />

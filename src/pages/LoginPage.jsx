@@ -43,7 +43,8 @@ export default function SignInPage() {
     console.log(user);
     
     try {
-      const response = await fetch("https://flask-web-klien-brbk6zo3cq-uc.a.run.app/login", {
+      // const response = await fetch("https://flask-web-klien-brbk6zo3cq-uc.a.run.app/login", {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         body: JSON.stringify(user),         
         headers: {
@@ -56,9 +57,8 @@ export default function SignInPage() {
         console.log(result);
         localStorage.setItem("username", username)
         localStorage.setItem("password", password)
-        localStorage.setItem("role", result.username.role)
-        // navigate("/transaksi")
-        // setAllPosts(result.data.reverse());
+        localStorage.setItem("role", result.data[0].role)
+        // localStorage.setItem("id", result.username.id)        
       }
       // else alert(await response.json().message);
       else alert("Gagal login!");
@@ -113,7 +113,7 @@ export default function SignInPage() {
     {
       getUsername&&getPassword ? <Navigate to="/transaksi"/>
       :
-    
+
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
             <CssBaseline />

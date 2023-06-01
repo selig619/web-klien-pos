@@ -2,23 +2,106 @@ import {useState, useEffect} from 'react';
 
 import AdminSideBar from '../layouts/AdminSideBar';
 import MyDataGrid from '../layouts/MyDataGrid';
-import {Box, Typography, Container, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
+import {Box, Typography, CircularProgress , Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
+// import { useSearchParams, , useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import queryString from 'query-string';
 
 
-
+// const initVal = {
+//   nama_barang: '',
+//   stock_barang: '',
+//   harga_pokok: '',
+//   harga_jual: '',
+// }
+// const [idBarang, setIdBarang] = useState("");
+// const [barang, setBarang] = useState(initVal);
 
 export default function BarangUpdatePage() {
-  // alert('adad');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    id_barang: '',
+    nama_barang: '',
+    stock_barang: '',
+    harga_pokok: '',
+    harga_jual: '',
+  });
 
-  const [metric, setMetric] = useState("")
 
-  // SIMPLE GETTT
-  fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/transaksi')
-  .then(res => res.json())
-  .then(data => {
-      console.log(data);
-  })
-  .catch(err => console.log(err))
+  useEffect( () => {
+    const query = new URLSearchParams(location.search);
+    const idBarang = query.get('idBarang');
+
+    if (idBarang) {
+      fetchBarang(idBarang);
+    }
+
+    // loadParams()
+    // fetchBarang()
+  },[location.search])
+
+  const fetchBarang = async (idBarang) =>{
+    try {
+      const response = await fetch(`http://localhost:5000/barang?idBarang=${idBarang}`);
+      const data = await response.json();
+      setFormData(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log('Error fetching data:', error);
+      setLoading(false);
+    }
+  }
+
+  const handleInputChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  // LOGIC UPDATE
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Perform update logic here with formData
+
+    try {
+      setLoading(true);
+      const updateField = {
+          "nama_barang": formData.nama_barang,
+          "stock_barang": formData.stock_barang,
+          "harga_pokok": formData.harga_pokok,
+          "harga_jual": formData.harga_jual
+      }
+  
+      const response = await fetch(
+        `http://localhost:5000/barang/${formData.id_barang}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateField),
+        }
+      );
+  
+      if (response.ok) {
+        navigate(-1)
+        // history.goBack();
+      } else {
+        console.log('Error updating data');
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log('Error updating data:', error);
+      setLoading(false);
+    }
+  };
+
+
+
   
   return (
   <>        
@@ -28,72 +111,76 @@ export default function BarangUpdatePage() {
     sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
       {/* <Container component="main" maxWidth="lg"> */}
 
-
         <Typography component="h1" variant="h5" align='center'>
           Update Barang
         </Typography>
 
-        <Box
-          sx={{ m: 5, mt:2, border:'2px solid'  }}>
-
-          <Box component="form" noValidate sx={{ mt: 1 }}>
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="nama"
-                label="nama"
-                name="nama"
-                autoComplete="nama"
-                autoFocus
-                value={metric}
-              />
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="stok"
-                label="stok"
-                name="stok"
-                autoComplete="stok"
-                autoFocus
-                value={metric}
-              />
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="harga-pokok"
-                label="harga-pokok"
-                name="harga-pokok"
-                autoComplete="harga-pokok"
-                autoFocus
-                value={metric}
+        {loading ? (
+        <CircularProgress />
+        ) : (
+          <Box
+            sx={{ m: 5, mt:2, border:'2px solid'  }}>
+  
+            <Box component="form" noValidate sx={{ mt: 1 }}>
+            {/* <form onSubmit={handleSubmit}> */}
+                <TextField
+                  label="ID Barang"
+                  name="id_barang"
+                  value={formData.id_barang}
+                  onChange={handleInputChange}
+                  fullWidth
+                  disabled
+                  margin="normal"
               />
               <TextField
                   margin="normal"
-                  required
                   fullWidth
-                  id="harga-jual"
-                  label="harga-jual"
-                  name="harga-jual"
-                  autoComplete="harga-jual"
-                  autoFocus
-                  value={metric}
+                  id="nama"
+                  label="nama"
+                  name="nama_barang"
+                  value={formData.nama_barang}
+                  onChange={handleInputChange}
                 />
-              <Button
-                onClick={()=>{
-
-                }}              
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                UPDATE
-              </Button>
+              <TextField
+                  margin="normal"
+                  fullWidth
+                  id="stok"
+                  label="Stok"
+                  name="stock_barang"
+                  value={formData.stock_barang}
+                  onChange={handleInputChange}
+                />
+              <TextField
+                  margin="normal"
+                  fullWidth
+                  id="harga-pokok"
+                  label="Harga Pokok"
+                  name="harga_pokok"
+                  value={formData.harga_pokok}
+                  onChange={handleInputChange}
+                />
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    id="harga-jual"
+                    label="Harga Jual"
+                    name="harga_jual"
+                    value={formData.harga_jual}
+                    onChange={handleInputChange}
+                  />
+                <Button type="submit"          
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={handleSubmit}
+                >
+                  UPDATE
+                </Button>
+                
+            {/* </form> */}
+            </Box>
           </Box>
 
-
-        </Box>
+        )}
 
     </Box>
   </>

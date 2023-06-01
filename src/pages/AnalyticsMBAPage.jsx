@@ -2,97 +2,111 @@ import {useState, useEffect} from 'react';
 
 import AdminSideBar from '../layouts/AdminSideBar';
 import MyDataGrid from '../layouts/MyDataGrid';
-import {Typography, Container, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
+import {Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 
 import Box from '@mui/material/Box';
 
 export default function AnalyticsMBAPage() {
 
+  const [file, setFile] = useState(null)
   const [metric, setMetric] = useState("")
   const [support, setSupport] = useState()
   const [metricValue, setmetricValue] = useState()
   const [token, setToken] = useState("")
+  const [dataMBA, setDataMBA] = useState([])
+  const [isLoading, setIsLoading] = useState(false);
+
   
-  const [file, setFile] = useState()
   // const handleFile = async (event) => {
   //   setFile(event.target.files[0])
   //   console.log(event.target.files[0])
   // };
 
-  const handleUpload = async (event) => {
-    event.preventDefault();
+  const handleUpload = async () => {
+    // event.preventDefault();
 
-    // console.log('support',support)
-    // console.log('metric',metric)
-    // console.log('metricValue',metricValue)
-    // console.log(token);
-    // console.log(file);
+    console.log('support',support)
+    console.log('metric',metric)
+    console.log('metricValue',metricValue)
+    console.log(token);
+    console.log(file);
 
+    // formData MBA
     const formData = new FormData()
-    // formData.append('file',file)
-    // formData.append('name','supermarket 1')
-    // formData.append('method','apriori')
-    // formData.append('minSupp',support)
-    // formData.append('metric',metric)
-    // formData.append('metric_value',metricValue)
-
     formData.append('file',file)
-    formData.append('nama','supermarket 1')
-    formData.append('umur',22)
+    formData.append('name','supermarket 1')
+    formData.append('method','apriori')
+    formData.append('minSupp',support)
+    formData.append('metric',metric)
+    formData.append('metric_value',metricValue)
 
     for (var [key, value] of formData.entries()){
       console.log(key,value);
     }
 
-    // console.log(formData);
-
     //GET ARM
-    // fetch(
-    //   'https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv',
-    //   {
-    //     method:'POST',
-    //     body: formData,
-    //     headers: {
-    //       'Accept': '*/*',
-    //       'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
-    //       'authorization' : token
-    //     },
-    //   }      
-    // ).then(response=>response.json().then(
-    //   (data) => {
-    //         console.log(data);
-    //     })
-    // ).catch(err => {console.log(err)})
-
     try {
-      // const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
-      const response = await fetch("http://localhost:5000/test-post", {
+      setIsLoading(true);
+      const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
+      // const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/clusters", {
         method: "POST",
         body: formData,
         headers: {
-          'Accept': '*/*',
-          'Content-Type': 'multipart/form-data',
-          // 'authorization' : token
+          'authorization' : token
+        //   // 'Accept': "multipart/form-data",
+        //   // 'Content-Type': 'application/json',
+        //   'Content-Type': 'multipart/form-data',          
         },
       });
   
       if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-        // setAllPosts(result.data.reverse());
+        const jsonData = await response.json();
+        // console.log(jsonData.rules);
+        const result = jsonData.rules
+
+        const dataMBAwID = result.map((item, index) => ({
+          id: parseInt(index) + 1, // Add 1 to index to start the ordered number from 1
+          ...item,
+        }));
+
+        setDataMBA(dataMBAwID);        
+        
+        setIsLoading(false);
       }
     } catch (err) {
+      console.log('Error fetching data:', err);
       alert(err);
+      setIsLoading(false);
     } finally {
-      // setLoading(false);
+      // console.log('Error fetching data:');
     }
 
-
+    // TESTPOSTTTTTTTTTTTTTTTTTTT
+    // try {
+    //   // const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
+    //   const response = await fetch("http://localhost:5000/test-post", {
+    //     method: "POST",
+    //     body: formData
+    //     // headers: {
+    //     //   // 'Accept': "multipart/form-data",
+    //     //   // 'Content-Type': 'application/json',
+    //     //   'Content-Type': 'multipart/form-data',
+    //     //   // 'authorization' : token
+    //     // },
+    //   });
+  
+    //   if (response.ok) {
+    //     const result = await response.json();
+    //     console.log(result);
+    //     // setAllPosts(result.data.reverse());
+    //   }
+    // } catch (err) {
+    //   alert(err);
+    // } finally {
+    //   // setLoading(false);
+    // }
 
   };
-
-
-
 
   return (
 <>
@@ -173,7 +187,7 @@ export default function AnalyticsMBAPage() {
             <Grid item  xs={12} sx={{ border:'1px solid', p:4 }}>
               {/* <div style={{margin:'auto', border:'1px solid'}}> */}
                 <input style={{marginLeft:'25%'}}
-                  accept="csv/*"
+                  // accept="csv/*"
                   // className={classes.input}
                   // style={{ display: 'none' }}
                   id="raised-button-file"
@@ -200,21 +214,26 @@ export default function AnalyticsMBAPage() {
               </Button>
             </Grid>
           </Grid>
+          {isLoading ? (
+            <CircularProgress /> 
+          ) : (
+            <MyDataGrid
+              rows={ dataMBA }
+              columns={[
+                {field : 'id', headerName: "No", width: 10},
+                {field : 'antecedents', type: "string", headerName: "Antecedents", width: 400},
+                {field : 'consequents', type: "string",  headerName: "Consequents", width: 400},
+                {field : 'confidence', type: "number", headerName: "Confidence", width: 80},
+                {field : 'lift', type: "number", headerName: "Lift", width: 80},
+                
+              ]
 
-          <MyDataGrid
-            rows={[
-              {'id':'aaa','umur':12},{'id':'bbbb','umur':54}
-            ]}
-            columns={[
-              {field : 'id', headerName: "ID"},
-              {field : 'umur', headerName: "Umur"},
-              
-            ]
+              }
+            >
 
-            }
-          >
+            </MyDataGrid>
+          )}
 
-          </MyDataGrid>
 
 
         </div>
