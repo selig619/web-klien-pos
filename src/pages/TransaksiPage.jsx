@@ -30,8 +30,8 @@ export default function TransaksiPage() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      // const response = await fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/trans');
-      const response = await fetch('http://localhost:5000/transaksi');
+      const response = await fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/transaksi');
+      // const response = await fetch('http://localhost:5000/transaksi');
       const jsonData = await response.json();
       const result = jsonData.data
       // console.log(result);

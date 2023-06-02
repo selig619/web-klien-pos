@@ -46,7 +46,8 @@ export default function BarangInsertPage() {
         harga_pokok: hargaPokok,
         harga_jual: hargaJual
       };
-      await fetch('http://localhost:5000/barang', {
+      // await fetch('http://localhost:5000/barang', {
+      await fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/barang', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

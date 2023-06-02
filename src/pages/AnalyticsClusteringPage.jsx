@@ -36,7 +36,7 @@ export default function AnalyticsMBAPage() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(`https://api-swalayan-brbk6zo3cq-as.a.run.app/clusters-csv?cluster=${cluster}`, {
+      const response = await fetch(`https://flask-web-klien-brbk6zo3cq-uc.a.run.app/clusters-csv?cluster=${cluster}`, {
       // const response = await fetch(`http://localhost:5000/clusters-csv?cluster=${cluster}`, {
         method: "POST",
         body: formData,

@@ -26,8 +26,8 @@ export default function LaporanPage() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      // const response = await fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/trans');
-      const response = await fetch('http://localhost:5000/detail-transaksi');
+      const response = await fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/detail-transaksi');
+      // const response = await fetch('http://localhost:5000/detail-transaksi');
       const jsonData = await response.json();
       const result = jsonData.data
       // console.log(result);

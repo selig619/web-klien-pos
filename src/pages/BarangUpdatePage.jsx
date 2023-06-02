@@ -44,7 +44,8 @@ export default function BarangUpdatePage() {
 
   const fetchBarang = async (idBarang) =>{
     try {
-      const response = await fetch(`http://localhost:5000/barang?idBarang=${idBarang}`);
+      // const response = await fetch(`http://localhost:5000/barang?idBarang=${idBarang}`);
+      const response = await fetch(`https://flask-web-klien-brbk6zo3cq-uc.a.run.app/barang?idBarang=${idBarang}`);
       const data = await response.json();
       setFormData(data.data);
       setLoading(false);
@@ -77,7 +78,8 @@ export default function BarangUpdatePage() {
       }
   
       const response = await fetch(
-        `http://localhost:5000/barang/${formData.id_barang}`,
+        // `http://localhost:5000/barang/${formData.id_barang}`,
+        `https://flask-web-klien-brbk6zo3cq-uc.a.run.app/barang/${formData.id_barang}`,
         {
           method: 'PUT',
           headers: {

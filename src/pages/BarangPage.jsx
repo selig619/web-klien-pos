@@ -22,8 +22,8 @@ export default function BarangPage() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      // const response = await fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/barang');
-      const response = await fetch('http://localhost:5000/barang');
+      const response = await fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/barang');
+      // const response = await fetch('http://localhost:5000/barang');
       const jsonData = await response.json();
       const result = jsonData.data
       console.log(result);
@@ -52,7 +52,8 @@ export default function BarangPage() {
   const handleDelete = async (id) =>{
     console.log(id);
     try {
-      await fetch(`http://localhost:5000/barang/${id}`, { method: 'DELETE' });
+      // await fetch(`http://localhost:5000/barang/${id}`, { method: 'DELETE' });
+      await fetch(`https://flask-web-klien-brbk6zo3cq-uc.a.run.app/barang/${id}`, { method: 'DELETE' });
       setBarang((prevData) => prevData.filter((row) => row.id !== id));
     } catch (error) {
       console.log('Error deleting row:', error);

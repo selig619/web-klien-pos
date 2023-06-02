@@ -43,8 +43,8 @@ export default function SignInPage() {
     console.log(user);
     
     try {
-      // const response = await fetch("https://flask-web-klien-brbk6zo3cq-uc.a.run.app/login", {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch("https://flask-web-klien-brbk6zo3cq-uc.a.run.app/login", {
+      // const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         body: JSON.stringify(user),         
         headers: {

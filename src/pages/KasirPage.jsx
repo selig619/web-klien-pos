@@ -42,7 +42,8 @@ function KasirPage() {
   const fetchItems = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/barang');
+      // const response = await fetch('http://localhost:5000/barang');
+      const response = await fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/barang');
       const data = await response.json();
       const result = data.data
 
@@ -146,7 +147,8 @@ function KasirPage() {
     // console.log(newTrans);
 
     // Make the API call to save the cart data
-    fetch('http://localhost:5000/transaksi', {
+    // fetch('http://localhost:5000/transaksi', {
+    fetch('https://flask-web-klien-brbk6zo3cq-uc.a.run.app/transaksi', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
