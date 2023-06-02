@@ -1,5 +1,19 @@
+# steps:
+# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#   entrypoint: 'bash'
+#   args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
+# timeout: '1600s'
+
 steps:
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'bash'
-  args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
-timeout: '1600s'
+  # Build the application
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+    dir: './'  # Root directory of your ReactJS project
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'build']
+    dir: './'  # Root directory of your ReactJS project
+
+  # Deploy to App Engine
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy', '--version', 'coba-deploy-cont-webklienpos']
+    dir: './'  # Root directory of your ReactJS project
