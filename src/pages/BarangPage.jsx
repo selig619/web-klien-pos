@@ -72,7 +72,7 @@ export default function BarangPage() {
         </Typography>
 
         <Box
-          sx={{ m: 5, mt:2, border:'2px solid'  }}>
+          sx={{ m: 5, mt:2, border:'0px solid'  }}>
 
             <Button
                 onClick={()=>{

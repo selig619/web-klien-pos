@@ -2,27 +2,21 @@ import {useState, useEffect} from 'react';
 
 import AdminSideBar from '../layouts/AdminSideBar';
 import MyDataGrid from '../layouts/MyDataGrid';
-import {Typography, Container, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
+import {Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 
 import Box from '@mui/material/Box';
 
-
-
-
 export default function AnalyticsMBAPage() {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [metric, setMetric] = useState("")
-  const [support, setSupport] = useState()
-  const [metricValue, setmetricValue] = useState()
-  const [token, setToken] = useState("")
-  
   const [file, setFile] = useState()
-  // const handleFile = async (event) => {
-  //   setFile(event.target.files[0])
-  //   console.log(event.target.files[0])
-  // };
+  const [cluster, setCluster] = useState(0)
+  const [token, setToken] = useState("")
+  const [dataCluster, setDataCluster] = useState([])
+  
 
-  const handleUpload = async (event) => {
+  const handleUploadClustering = async (event) => {
     event.preventDefault();
 
     // console.log('support',support)
@@ -31,63 +25,58 @@ export default function AnalyticsMBAPage() {
     // console.log(token);
     // console.log(file);
 
+    // formData clustering
     const formData = new FormData()
     formData.append('file',file)
     formData.append('name','supermarket 1')
-    formData.append('method','apriori')
-    formData.append('minSupp',support)
-    formData.append('metric',metric)
-    formData.append('metric_value',metricValue)
 
     for (var [key, value] of formData.entries()){
       console.log(key,value);
     }
 
-    // console.log(formData);
-
-    //GET ARM
-    // fetch(
-    //   'https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv',
-    //   {
-    //     method:'POST',
-    //     body: formData,
-    //     headers: {
-    //       'Accept': '*/*',
-    //       'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
-    //       'authorization' : token
-    //     },
-    //   }      
-    // ).then(response=>response.json().then(
-    //   (data) => {
-    //         console.log(data);
-    //     })
-    // ).catch(err => {console.log(err)})
-
     try {
-      const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
-      // const response = await fetch("http://localhost:5000/arm-csv", {
+      setIsLoading(true);
+      const response = await fetch(`https://api-swalayan-brbk6zo3cq-as.a.run.app/clusters-csv?cluster=${cluster}`, {
+      // const response = await fetch(`http://localhost:5000/clusters-csv?cluster=${cluster}`, {
         method: "POST",
         body: formData,
         headers: {
-          'Accept': '*/*',
-          'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
           'authorization' : token
+        //   // 'Accept': "multipart/form-data",
+        //   // 'Content-Type': 'application/json',
+        //   'Content-Type': 'multipart/form-data',          
         },
       });
+      const jsonData = await response.json();
+      console.log(jsonData);
   
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-        // setAllPosts(result.data.reverse());
+      if (!response.ok) {        
+        setDataCluster([]);
+        console.log(jsonData.message);
+        alert(jsonData.message);
+        throw new Error(jsonData.message || 'Error fetching data');
       }
+      // else{
+        const result = jsonData.clusters_data
+        const dataClusterwID = result.map((item, index) => ({
+          id: parseInt(index) + 1, 
+          ...item,
+        }));
+        setDataCluster(dataClusterwID);
+        setIsLoading(false);
+      // }
     } catch (err) {
-      alert(err);
+      setError(err.message);      
+      // console.log('Error fetching data:', err);
+      // alert(err);
     } finally {
-      // setLoading(false);
+      // console.log('Error fetching data:');
+      setIsLoading(false);
     }
+  };
 
-
-
+  const handleAlertClose = () => {
+    setError(null);
   };
 
   return (
@@ -98,7 +87,7 @@ export default function AnalyticsMBAPage() {
 {/* </Box> */}
   
     <Box
-    sx={{ bgcolor: '', ml: 35, mt:2, border:'2px solid'  }}>        
+    sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>        
       {/* <Container component="main" maxWidth="lg"> */}
 
         <Typography component="h1" variant="h5" align='center'>
@@ -110,8 +99,18 @@ export default function AnalyticsMBAPage() {
 
         <div>
           <Grid container sx={{ border:'0px solid'}}>
+            <Typography sx={{ ml:5}} >Cluster</Typography> 
+            <TextField sx={{ ml:3}}
+              required
+              size='small'
+              id="support"
+              label="Cluster"
+              name="cluster"
+              autoFocus
+              onChange={e => setCluster(e.target.value)}
+            />
 
-            <Grid item p={5} sx={{ border:'1px solid' ,m:'auto', width:'100%' }} justifyContent={'center'}>
+            <Grid item p={5} sx={{ border:'0px solid' ,m:'auto', width:'100%' }} justifyContent={'center'}>
               {/* <Stack direction='row' justifyContent={'center'} spacing={4}> */}
                 <TextField sx={{ my: 'auto', mx:'auto', width:'90%' }}
                   margin="normal"
@@ -127,7 +126,7 @@ export default function AnalyticsMBAPage() {
             </Grid>
 
             {/*  FILEEEEEEEEEEEEEEEEEEEEEEEEEE */}
-            <Grid item  xs={12} sx={{ border:'1px solid', p:4 }}>
+            <Grid item  xs={12} sx={{ border:'0px solid', p:4 }}>
               {/* <div style={{margin:'auto', border:'1px solid'}}> */}
                 <input style={{marginLeft:'25%'}}
                   accept="csv/*"
@@ -151,31 +150,42 @@ export default function AnalyticsMBAPage() {
             <Grid item m="auto" sx={{ border:'0px solid', p:4 }}>
               <Button justifyContent={'center'}
                 variant="contained"
-                onClick={handleUpload}
-              >
-                Apply
+                onClick={handleUploadClustering}
+              >Apply
               </Button>
             </Grid>
           </Grid>
-
-          <MyDataGrid
-            rows={[
-              {'id':'aaa','umur':12},{'id':'bbbb','umur':54}
-            ]}
-            columns={[
-              {field : 'id', headerName: "ID"},
-              {field : 'umur', headerName: "Umur"},
-              
-            ]
-
-            }
-          >
-
-          </MyDataGrid>
-
-
+          {isLoading ? (
+            <CircularProgress /> 
+          ) : (
+            <>
+              {
+              <MyDataGrid
+                rows={ dataCluster }
+                columns={[
+                  {field : 'id', headerName: "No", width: 10},
+                  {field : 'recency', type: "number", headerName: "Recency", width: 80},
+                  {field : 'r_score', type: "number", headerName: "R_Score", width: 80},
+                  {field : 'frequency', type: "number", headerName: "Frequency", width: 80},
+                  {field : 'f_score', type: "number", headerName: "F_Score", width: 80},
+                  {field : 'monetary', type: "number", headerName: "Monetary", width: 80},
+                  {field : 'm_score', type: "number", headerName: "M_Score", width: 80},
+                  {field : 'cust_id', type: "string", headerName: "ID Customer", width: 150},
+                  {field : 'cluster', type: "number", headerName: "Cluster", width: 80},   
+                ]}
+              ></MyDataGrid>
+              }
+              {error && (
+                <div>
+                  <p>Error: {error}</p>
+                  <Button variant="contained" onClick={handleAlertClose}>
+                    Close
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
         </div>
-
     </Box>
 </>
   )

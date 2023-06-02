@@ -3,15 +3,26 @@ import {useState, useEffect} from 'react';
 import AdminSideBar from '../layouts/AdminSideBar';
 import { useNavigate } from 'react-router-dom';
 import {Box, Typography, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
+import KasirSideBar from '../layouts/KasirSideBar';
 
 
 export default function BarangInsertPage() {
+  const [userRole, setUserRole] = useState('');
   const navigate = useNavigate();
 
   const [nama, setNama] = useState('');
   const [stok, setStok] = useState('');
   const [hargaJual, setHargaJual] = useState('');
   const [hargaPokok, setHargaPokok] = useState('');
+
+  useEffect(() => {   
+    cekRoleSideBar();
+  }, []);
+
+  const cekRoleSideBar = () =>{
+    const role = localStorage.getItem('role');
+    setUserRole(role);
+  }
 
   const handleNamaChange = (event) => {
     setNama(event.target.value);
@@ -59,8 +70,8 @@ export default function BarangInsertPage() {
   
   return (
   <>        
-    <AdminSideBar>        
-    </AdminSideBar>
+    {userRole === 'admin' && <AdminSideBar/>} 
+    {userRole === 'kasir' && <KasirSideBar/>} 
     <Box
     sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
       {/* <Container component="main" maxWidth="lg"> */}

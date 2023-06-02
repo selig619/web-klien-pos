@@ -7,6 +7,8 @@ import {Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button
 import Box from '@mui/material/Box';
 
 export default function AnalyticsMBAPage() {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [file, setFile] = useState(null)
   const [metric, setMetric] = useState("")
@@ -14,7 +16,6 @@ export default function AnalyticsMBAPage() {
   const [metricValue, setmetricValue] = useState()
   const [token, setToken] = useState("")
   const [dataMBA, setDataMBA] = useState([])
-  const [isLoading, setIsLoading] = useState(false);
 
   
   // const handleFile = async (event) => {
@@ -28,8 +29,8 @@ export default function AnalyticsMBAPage() {
     console.log('support',support)
     console.log('metric',metric)
     console.log('metricValue',metricValue)
-    console.log(token);
-    console.log(file);
+    // console.log(token);
+    // console.log(file);
 
     // formData MBA
     const formData = new FormData()
@@ -48,75 +49,55 @@ export default function AnalyticsMBAPage() {
     try {
       setIsLoading(true);
       const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
-      // const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/clusters", {
         method: "POST",
         body: formData,
         headers: {
           'authorization' : token
         //   // 'Accept': "multipart/form-data",
         //   // 'Content-Type': 'application/json',
-        //   'Content-Type': 'multipart/form-data',          
+        //   'Content-Type': 'multipart/form-data',
         },
       });
+      const jsonData = await response.json();
+      console.log(jsonData);
+      setDataMBA([]);
   
-      if (response.ok) {
-        const jsonData = await response.json();
-        // console.log(jsonData.rules);
+      if (!response.ok) {
+        console.log(jsonData.message);
+        alert(jsonData.message);
+        throw new Error(jsonData.message || 'Error fetching data');
+      }
+      // else{
         const result = jsonData.rules
-
         const dataMBAwID = result.map((item, index) => ({
-          id: parseInt(index) + 1, // Add 1 to index to start the ordered number from 1
+          id: parseInt(index) + 1, 
           ...item,
         }));
-
-        setDataMBA(dataMBAwID);        
-        
+        setDataMBA(dataMBAwID);
+        handleAlertClose();
         setIsLoading(false);
-      }
+      // }
     } catch (err) {
-      console.log('Error fetching data:', err);
-      alert(err);
-      setIsLoading(false);
+      setError(err.message);      
+      // console.log('Error fetching data:', err);
+      // alert(err);
     } finally {
       // console.log('Error fetching data:');
+      setIsLoading(false);
     }
+  };
 
-    // TESTPOSTTTTTTTTTTTTTTTTTTT
-    // try {
-    //   // const response = await fetch("https://api-swalayan-brbk6zo3cq-as.a.run.app/arm-csv", {
-    //   const response = await fetch("http://localhost:5000/test-post", {
-    //     method: "POST",
-    //     body: formData
-    //     // headers: {
-    //     //   // 'Accept': "multipart/form-data",
-    //     //   // 'Content-Type': 'application/json',
-    //     //   'Content-Type': 'multipart/form-data',
-    //     //   // 'authorization' : token
-    //     // },
-    //   });
-  
-    //   if (response.ok) {
-    //     const result = await response.json();
-    //     console.log(result);
-    //     // setAllPosts(result.data.reverse());
-    //   }
-    // } catch (err) {
-    //   alert(err);
-    // } finally {
-    //   // setLoading(false);
-    // }
-
+  const handleAlertClose = () => {
+    setError(null);
   };
 
   return (
 <>
-{/* <Box sx={{width:1/2}}> */}
   <AdminSideBar>
   </AdminSideBar>
-{/* </Box> */}
   
     <Box
-    sx={{ bgcolor: '', ml: 35, mt:2, border:'2px solid'  }}>        
+    sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>        
       {/* <Container component="main" maxWidth="lg"> */}
 
         <Typography component="h1" variant="h5" align='center'>
@@ -168,7 +149,7 @@ export default function AnalyticsMBAPage() {
               </Stack>
             </Grid>
 
-            <Grid item p={5} sx={{ border:'1px solid' ,m:'auto', width:'100%' }} justifyContent={'center'}>
+            <Grid item p={5} sx={{ border:'0px solid' ,m:'auto', width:'100%' }} justifyContent={'center'}>
               {/* <Stack direction='row' justifyContent={'center'} spacing={4}> */}
                 <TextField sx={{ my: 'auto', mx:'auto', width:'90%' }}
                   margin="normal"
@@ -184,7 +165,7 @@ export default function AnalyticsMBAPage() {
             </Grid>
 
             {/*  FILEEEEEEEEEEEEEEEEEEEEEEEEEE */}
-            <Grid item  xs={12} sx={{ border:'1px solid', p:4 }}>
+            <Grid item  xs={12} sx={{ border:'0px solid', p:4 }}>
               {/* <div style={{margin:'auto', border:'1px solid'}}> */}
                 <input style={{marginLeft:'25%'}}
                   // accept="csv/*"
@@ -217,27 +198,30 @@ export default function AnalyticsMBAPage() {
           {isLoading ? (
             <CircularProgress /> 
           ) : (
-            <MyDataGrid
-              rows={ dataMBA }
-              columns={[
-                {field : 'id', headerName: "No", width: 10},
-                {field : 'antecedents', type: "string", headerName: "Antecedents", width: 400},
-                {field : 'consequents', type: "string",  headerName: "Consequents", width: 400},
-                {field : 'confidence', type: "number", headerName: "Confidence", width: 80},
-                {field : 'lift', type: "number", headerName: "Lift", width: 80},
-                
-              ]
-
+            <>
+              {
+                <MyDataGrid
+                  rows={ dataMBA }
+                  columns={[
+                    {field : 'id', headerName: "No", width: 10},
+                    {field : 'antecedents', type: "string", headerName: "Antecedents", width: 400},
+                    {field : 'consequents', type: "string",  headerName: "Consequents", width: 400},
+                    {field : 'confidence', type: "number", headerName: "Confidence", width: 80},
+                    {field : 'lift', type: "number", headerName: "Lift", width: 80},                    
+                  ]}
+                ></MyDataGrid>
               }
-            >
-
-            </MyDataGrid>
+              {error && (
+                <div>
+                  <p>Error: {error}</p>
+                  <Button variant="contained" onClick={handleAlertClose}>
+                    Close
+                  </Button>
+                </div>
+              )}
+            </>
           )}
-
-
-
         </div>
-
     </Box>
 </>
   )

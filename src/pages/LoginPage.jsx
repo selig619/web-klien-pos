@@ -58,7 +58,9 @@ export default function SignInPage() {
         localStorage.setItem("username", username)
         localStorage.setItem("password", password)
         localStorage.setItem("role", result.data[0].role)
-        // localStorage.setItem("id", result.username.id)        
+        // localStorage.setItem("id", result.username.id)
+
+        navigate("/transaksi")
       }
       // else alert(await response.json().message);
       else alert("Gagal login!");

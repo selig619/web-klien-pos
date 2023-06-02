@@ -5,17 +5,27 @@ import MyDataGrid from '../layouts/MyDataGrid';
 import {Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 
 import Box from '@mui/material/Box';
+import KasirSideBar from '../layouts/KasirSideBar';
 
 
 
 
 export default function TransaksiPage() {
+  const [userRole, setUserRole] = useState('');
+
   const [trans, setTrans] = useState([])
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    cekRoleSideBar();
+
     fetchData();
   }, []);
+
+  const cekRoleSideBar = () =>{
+    const role = localStorage.getItem('role');
+    setUserRole(role);
+  }
 
   const fetchData = async () => {
     try {
@@ -56,9 +66,9 @@ export default function TransaksiPage() {
     <Box
     sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
       {/* <Container component="main" maxWidth="lg"> */}
+        {userRole === 'admin' && <AdminSideBar/>} 
+        {userRole === 'kasir' && <KasirSideBar/>} 
 
-        <AdminSideBar>        
-        </AdminSideBar>
         <Typography component="h1" variant="h5" align='center'>
           Transaksi Penjualan
         </Typography>
@@ -66,7 +76,7 @@ export default function TransaksiPage() {
           <CircularProgress /> 
         ) : (
           <Box
-            sx={{ m: 5, mt:2, border:'2px solid'  }}>
+            sx={{ m: 5, mt:2, border:'0px solid'  }}>
             <MyDataGrid
               rows={ trans }
               columns={[

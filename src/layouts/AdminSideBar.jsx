@@ -123,13 +123,7 @@ export default function AdminSideBar() {
             </ListItemButton>
           </ListItem>
         </List>
-        <List>
-          <ListItem key={'kasir'} disablePadding>
-            <ListItemButton onClick={()=> navigate("/kasir")}>
-              <ListItemText primary={'Kasir'} />
-            </ListItemButton>
-          </ListItem>
-        </List>
+
         <List>
           <ListItem key={'logout'} disablePadding>
             <ListItemButton onClick={()=>{

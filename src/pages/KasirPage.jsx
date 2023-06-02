@@ -5,8 +5,11 @@ import AdminSideBar from '../layouts/AdminSideBar';
 import {Box,Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 import { GridActionsCellItem, GridDeleteIcon, GridLoadIcon, GridRowId } from '@mui/x-data-grid';
 import MyDataGrid from '../layouts/MyDataGrid';
+import KasirSideBar from '../layouts/KasirSideBar';
 
 function KasirPage() {
+  const [userRole, setUserRole] = useState('');
+
   const [cashierUname, setCashierUname] = useState('');
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState('');
@@ -21,6 +24,8 @@ function KasirPage() {
   const [note, setNote] = useState('');
 
   useEffect(() => {   
+    cekRoleSideBar();
+
     setCurrentDate(new Date().toLocaleDateString())
     const storedCashierUname = localStorage.getItem('username');
     if (storedCashierUname) {
@@ -28,6 +33,11 @@ function KasirPage() {
     }
     fetchItems();
   }, []);
+
+  const cekRoleSideBar = () =>{
+    const role = localStorage.getItem('role');
+    setUserRole(role);
+  }
 
   const fetchItems = async () => {
     try {
@@ -165,25 +175,25 @@ function KasirPage() {
     <>
       <Box
       sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
-
-          <AdminSideBar>        
-          </AdminSideBar>
+          {userRole === 'admin' && <AdminSideBar/>} 
+          {userRole === 'kasir' && <KasirSideBar/>} 
+     
           <Typography component="h1" variant="h5" align='center'>
             Kasir
           </Typography>
-
 
           {loading ? (
             <CircularProgress />
           ) : (
             <Box
-              sx={{ m: 8, p: 3, border:'2px solid' }}>
+              sx={{ m: 3, p: 3, border:'0px solid' }}>
               <Grid container>
                 <Grid item xs >
-                  <Box sx={{bgcolor:'lightblue', border:'2px solid', height: 180}} p={3}>
-                    <Grid item md={12}>
+                  {/* KOTAK Tanggal Kasir */}
+                  <Box sx={{bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180}} p={3}>
+                    <Grid item md={12} >
                       <Stack sx={{border:'0px solid'}} direction={'row'}>
-                        <Typography sx={{my:'auto'}}>
+                        <Typography sx={{my:'auto', fontWeight:700}}>
                           Tanggal
                         </Typography>                        
                         <TextField sx={{ml:1}} disabled
@@ -193,7 +203,7 @@ function KasirPage() {
                         />
                       </Stack>
                       <Stack sx={{border:'0px solid', mt:3}} direction={'row'}>
-                        <Typography sx={{my:'auto'}}>
+                        <Typography sx={{my:'auto', fontWeight:700}}>
                           Cashier
                         </Typography>                        
                         <TextField sx={{ml:1}} disabled
@@ -207,11 +217,12 @@ function KasirPage() {
                   </Box>
                 </Grid>
                 
+                {/* KOTAK Barang, jumlah, button tambah */}
                 <Grid item xs sx={{ ml: 2}}>
-                  <Box sx={{bgcolor:'lightblue', border:'2px solid', height: 180}} p={3}>
+                  <Box sx={{bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180}} p={3}>
                     <Grid item md={12}>
                       <Stack sx={{border:'0px solid'}} direction={'row'}>
-                        <Typography sx={{my:'auto'}}>
+                        <Typography sx={{my:'auto', fontWeight:700}}>
                           Barang
                         </Typography>
 
@@ -239,7 +250,7 @@ function KasirPage() {
                         >Tambah</Button>
                       </Stack>
                       <Stack sx={{border:'0px solid', mt:3}} direction={'row'}>
-                        <Typography sx={{my:'auto'}}>
+                        <Typography sx={{my:'auto', fontWeight:700}}>
                           Jumlah
                         </Typography>                        
                         <TextField sx={{ml:1}}
@@ -254,7 +265,9 @@ function KasirPage() {
                   </Box>
                 </Grid>
                 <Grid item xs sx={{ ml: 2}}>
-                  <Box sx={{ml: 2, my:'auto', bgcolor:'lightblue', border:'2px solid', height: 180, maxWidth:7/8}} p={3}>
+
+                  {/* KOTAK HARGA TOTAL */}
+                  <Box sx={{ml: 2, my:'auto', bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180, maxWidth:7/8}} p={3}>
                     <Typography sx={{}} variant='h3' value>
                       {/* Rp {totalPrice==NaN ? 0 : totalPrice} */}
                       {totalPrice}
@@ -269,7 +282,7 @@ function KasirPage() {
               </Grid>            
               
               <Box
-              sx={{ mt: 5, p: 3, border:'2px solid' }}>
+              sx={{ mt: 5, border:'0px solid' }}>
                 <MyDataGrid sx={{mt: 5}}
                   // rows={ cartItems }
                   rows={ cartItems.map((item, index) => ({ id: index, ...item })) }
@@ -291,7 +304,7 @@ function KasirPage() {
                         //   onClick={() => handleRemoveFromCart(params.row.id)}
                         // />
                         <Button
-                          variant="outlined"
+                          variant="contained"
                           color="error"
                           onClick={() => handleRemoveItem(params.row.id)}
                         >
@@ -308,12 +321,12 @@ function KasirPage() {
               <Grid container sx={{mt : 5, height: 300}}>
                 {/* CASH CHANGE */}
                 <Grid item xs >
-                  <Box sx={{bgcolor:'lightblue', border:'2px solid', height: 180}} p={3}>
+                  <Box sx={{bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180}} p={3}>
                     
                     <Grid item md={12}>
-                      <Box sx={{p:1, bgcolor:'lightblue', border:'0px solid', height: 7/8}}>
+                      <Box sx={{p:1, height: 7/8}}>
                         <Stack sx={{border:'0px solid'}} direction={'row'}>
-                          <Typography sx={{my:'auto'}}>
+                          <Typography sx={{my:'auto', fontWeight:700}}>
                             Cash
                           </Typography>                        
                           <TextField sx={{ml:1}}
@@ -325,7 +338,7 @@ function KasirPage() {
                           />
                         </Stack>
                         <Stack sx={{border:'0px solid', mt:3}} direction={'row'}>
-                          <Typography sx={{my:'auto'}}>
+                          <Typography sx={{my:'auto', fontWeight:700}}>
                             Change
                           </Typography>                        
                           <TextField sx={{ml:1}} 
@@ -344,7 +357,7 @@ function KasirPage() {
                 {/* NOTEEEEE */}            
                 <Grid item xs >
 
-                  <Box sx={{ml: 2, bgcolor:'lightblue', border:'2px solid', height: 180}} p={3}>
+                  <Box sx={{ml: 2, bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180}} p={3}>
                     <TextField  multiline
                       size='medium'
                       id="note" label="Note" name="note"
@@ -359,7 +372,7 @@ function KasirPage() {
                 <Grid item xs sx={{ml: 2}} >
                   
                   <Grid item md={12}>
-                    <Box sx={{p:1, bgcolor:'lightblue', border:'2px solid', height: 60}}>
+                    <Box sx={{p:1, bgcolor:'white', border:'0px solid black', borderRadius: '16px', height: 60}}>
                       <Button
                         fullWidth
                         variant="contained"
@@ -369,7 +382,7 @@ function KasirPage() {
                     </Box>
                   </Grid>
                   <Grid item md={12}>
-                    <Box sx={{p:1, bgcolor:'lightblue', border:'2px solid', height:100}} >
+                    <Box sx={{p:1, bgcolor:'white', border:'0px solid black', borderRadius: '16px', height:100}} >
                       <Button
                         fullWidth
                         variant="contained"

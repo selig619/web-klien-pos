@@ -4,14 +4,24 @@ import AdminSideBar from '../layouts/AdminSideBar';
 import MyDataGrid from '../layouts/MyDataGrid';
 import {Typography, CircularProgress} from '@mui/material';
 import Box from '@mui/material/Box';
+import KasirSideBar from '../layouts/KasirSideBar';
 
-export default function LaporanPage() {  
+export default function LaporanPage() {
+  const [userRole, setUserRole] = useState('');
+
   const [laporan, setLaporan] = useState([])
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    cekRoleSideBar();
+
     fetchData();
   }, []);
+
+  const cekRoleSideBar = () =>{
+    const role = localStorage.getItem('role');
+    setUserRole(role);
+  }
 
   const fetchData = async () => {
     try {
@@ -56,8 +66,10 @@ export default function LaporanPage() {
     sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
       {/* <Container component="main" maxWidth="lg"> */}
 
-        <AdminSideBar>        
-        </AdminSideBar>
+        {userRole === 'admin' && <AdminSideBar/>} 
+        {userRole === 'kasir' && <KasirSideBar/>} 
+
+
         <Typography component="h1" variant="h5" align='center'>
           Laporan Penjualan
         </Typography>
@@ -65,7 +77,7 @@ export default function LaporanPage() {
           <CircularProgress /> 
         ) : (
           <Box
-            sx={{ m: 5, mt:2, border:'2px solid'  }}>
+            sx={{ m: 5, mt:2, border:'0px solid'  }}>
             <MyDataGrid
               rows={ laporan }
               columns={[
