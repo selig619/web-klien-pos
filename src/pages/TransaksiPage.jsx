@@ -70,7 +70,7 @@ export default function TransaksiPage() {
         {userRole === 'kasir' && <KasirSideBar/>} 
 
         <Typography component="h1" variant="h5" align='center'>
-          Transaksi Penjualan
+          Transaksi Penjualan UPDATE DONGGGGGG
         </Typography>
         {isLoading ? (
           <CircularProgress /> 
