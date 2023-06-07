@@ -6,6 +6,7 @@ import {Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button
 
 import Box from '@mui/material/Box';
 import KasirSideBar from '../layouts/KasirSideBar';
+import AppBarAtas from '../layouts/AppBarAtas';
 
 
 
@@ -69,21 +70,23 @@ export default function TransaksiPage() {
         {userRole === 'admin' && <AdminSideBar/>} 
         {userRole === 'kasir' && <KasirSideBar/>} 
 
-        <Typography component="h1" variant="h5" align='center'>
-          Transaksi Penjualan UPDATE DONGGGGGG
-        </Typography>
+        <AppBarAtas/>
+
         {isLoading ? (
           <CircularProgress /> 
         ) : (
           <Box
-            sx={{ m: 5, mt:2, border:'0px solid'  }}>
+            sx={{ m: 5, border:'0px solid'  }}>
+            <Typography sx={{ mt:9, mb:4 }} component="h1" variant="h5" align='center'>
+              Transaksi Penjualan
+            </Typography>
             <MyDataGrid
               rows={ trans }
               columns={[
                 {field : 'id', headerName: "No", width: 50},
                 {field : 'tgl_htrans', type: "dateTime", headerName: "Tanggal", width: 300},
                 {field : 'id_transaksi', type: "string",  headerName: "ID Transaksi", width: 350},
-                {field : 'pembayaran', type: "string", headerName: "Pembayaran", width: 100},
+                {field : 'pembayaran', type: "string", headerName: "Pembayaran", width: 80},
                 {field : 'total', type: "number", headerName: "Total", width: 200}
               ]}
             >

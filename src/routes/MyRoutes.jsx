@@ -8,6 +8,7 @@ import BarangUpdatePage from '../pages/BarangUpdatePage';
 import AnalyticsMBAPage from '../pages/AnalyticsMBAPage';
 import AnalyticsClusteringPage from '../pages/AnalyticsClusteringPage';
 import KasirPage from '../pages/KasirPage';
+import DocumentationPage from '../pages/DocumentationPage';
 
 export default function MyRoutes() {
     return(
@@ -24,6 +25,7 @@ export default function MyRoutes() {
                 <Route path="/mba" element={<AnalyticsMBAPage/>} />
                 <Route path="/clustering" element={<AnalyticsClusteringPage/>} />
                 <Route path="/kasir" element={<KasirPage/>} />
+                <Route path="/docs" element={<DocumentationPage/>} />
             </Routes>
         </BrowserRouter>
     )

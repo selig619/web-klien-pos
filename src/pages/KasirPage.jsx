@@ -6,6 +6,7 @@ import {Box,Typography, CircularProgress, Stack, TextField, Select, MenuItem, Bu
 import { GridActionsCellItem, GridDeleteIcon, GridLoadIcon, GridRowId } from '@mui/x-data-grid';
 import MyDataGrid from '../layouts/MyDataGrid';
 import KasirSideBar from '../layouts/KasirSideBar';
+import AppBarAtas from '../layouts/AppBarAtas';
 
 function KasirPage() {
   const [userRole, setUserRole] = useState('');
@@ -176,11 +177,13 @@ function KasirPage() {
   return (
     <>
       <Box
-      sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
+      sx={{ bgcolor: '', ml: 35, mt:0, border:'0px solid'  }}>
           {userRole === 'admin' && <AdminSideBar/>} 
           {userRole === 'kasir' && <KasirSideBar/>} 
+
+          <AppBarAtas/>
      
-          <Typography component="h1" variant="h5" align='center'>
+          <Typography sx={{ mt:11, }}  component="h1" variant="h5" align='center'>
             Kasir
           </Typography>
 
@@ -192,7 +195,7 @@ function KasirPage() {
               <Grid container>
                 <Grid item xs >
                   {/* KOTAK Tanggal Kasir */}
-                  <Box sx={{bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180}} p={3}>
+                  <Box sx={{bgcolor:'whitesmoke', boxShadow: 2, border:'0px solid black', borderRadius: '16px', height: 180}} p={3}>
                     <Grid item md={12} >
                       <Stack sx={{border:'0px solid'}} direction={'row'}>
                         <Typography sx={{my:'auto', fontWeight:700}}>
@@ -221,7 +224,7 @@ function KasirPage() {
                 
                 {/* KOTAK Barang, jumlah, button tambah */}
                 <Grid item xs sx={{ ml: 2}}>
-                  <Box sx={{bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180}} p={3}>
+                  <Box sx={{bgcolor:'whitesmoke', boxShadow: 2, border:'0px solid black', borderRadius: '16px', height: 180}} p={3}>
                     <Grid item md={12}>
                       <Stack sx={{border:'0px solid'}} direction={'row'}>
                         <Typography sx={{my:'auto', fontWeight:700}}>
@@ -269,7 +272,7 @@ function KasirPage() {
                 <Grid item xs sx={{ ml: 2}}>
 
                   {/* KOTAK HARGA TOTAL */}
-                  <Box sx={{ml: 2, my:'auto', bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180, maxWidth:7/8}} p={3}>
+                  <Box sx={{ml: 2, my:'auto', bgcolor:'whitesmoke', boxShadow: 2, border:'0px solid black', borderRadius: '16px', height: 180, maxWidth:7/8}} p={3}>
                     <Typography sx={{}} variant='h3' value>
                       {/* Rp {totalPrice==NaN ? 0 : totalPrice} */}
                       {totalPrice}
@@ -285,7 +288,7 @@ function KasirPage() {
               
               <Box
               sx={{ mt: 5, border:'0px solid' }}>
-                <MyDataGrid sx={{mt: 5}}
+                <MyDataGrid sx={{mt: 5, bgcolor:'whitesmoke', boxShadow: 2}}
                   // rows={ cartItems }
                   rows={ cartItems.map((item, index) => ({ id: index, ...item })) }
                   
@@ -323,7 +326,7 @@ function KasirPage() {
               <Grid container sx={{mt : 5, height: 300}}>
                 {/* CASH CHANGE */}
                 <Grid item xs >
-                  <Box sx={{bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180}} p={3}>
+                  <Box sx={{bgcolor:'whitesmoke', boxShadow: 2, border:'0px solid black', borderRadius: '16px', height: 180}} p={3}>
                     
                     <Grid item md={12}>
                       <Box sx={{p:1, height: 7/8}}>
@@ -359,7 +362,7 @@ function KasirPage() {
                 {/* NOTEEEEE */}            
                 <Grid item xs >
 
-                  <Box sx={{ml: 2, bgcolor:'lightgray', border:'1px solid black', borderRadius: '16px', height: 180}} p={3}>
+                  <Box sx={{ml: 2, bgcolor:'whitesmoke', boxShadow: 2, border:'0px solid black', borderRadius: '16px', height: 180}} p={3}>
                     <TextField  multiline
                       size='medium'
                       id="note" label="Note" name="note"

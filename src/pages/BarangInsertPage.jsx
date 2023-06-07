@@ -4,6 +4,7 @@ import AdminSideBar from '../layouts/AdminSideBar';
 import { useNavigate } from 'react-router-dom';
 import {Box, Typography, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 import KasirSideBar from '../layouts/KasirSideBar';
+import AppBarAtas from '../layouts/AppBarAtas';
 
 
 export default function BarangInsertPage() {
@@ -70,20 +71,21 @@ export default function BarangInsertPage() {
   };
   
   return (
-  <>        
-    {userRole === 'admin' && <AdminSideBar/>} 
-    {userRole === 'kasir' && <KasirSideBar/>} 
+  // <>        
     <Box
     sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
       {/* <Container component="main" maxWidth="lg"> */}
+        {userRole === 'admin' && <AdminSideBar/>} 
+        {userRole === 'kasir' && <KasirSideBar/>} 
 
-
-        <Typography component="h1" variant="h5" align='center'>
-          Tambah Barang
-        </Typography>
+        <AppBarAtas/>
 
         <Box
-          sx={{ m: 5, mt:2, border:'2px solid'  }}>
+          sx={{ m: 5, border:'0px solid'  }}>
+
+          <Typography sx={{ mt:9, mb:4 }} component="h1" variant="h5" align='center'>
+            Tambah Barang
+          </Typography>            
 
           <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
@@ -140,6 +142,6 @@ export default function BarangInsertPage() {
         </Box>
 
     </Box>
-  </>
+  // </>
   )
 }

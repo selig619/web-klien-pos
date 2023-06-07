@@ -5,6 +5,7 @@ import MyDataGrid from '../layouts/MyDataGrid';
 import {Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 
 import Box from '@mui/material/Box';
+import AppBarAtas from '../layouts/AppBarAtas';
 
 export default function AnalyticsMBAPage() {
   const [error, setError] = useState(null);
@@ -89,8 +90,9 @@ export default function AnalyticsMBAPage() {
     <Box
     sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>        
       {/* <Container component="main" maxWidth="lg"> */}
+        <AppBarAtas/>
 
-        <Typography component="h1" variant="h5" align='center'>
+        <Typography sx={{ mt:11, mb:4 }} component="h1" variant="h5" align='center'>
           Analytics
         </Typography>
         <Typography component="h4" align='left' my={4}>

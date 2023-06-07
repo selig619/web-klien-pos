@@ -5,6 +5,7 @@ import MyDataGrid from '../layouts/MyDataGrid';
 import {Typography, CircularProgress} from '@mui/material';
 import Box from '@mui/material/Box';
 import KasirSideBar from '../layouts/KasirSideBar';
+import AppBarAtas from '../layouts/AppBarAtas';
 
 export default function LaporanPage() {
   const [userRole, setUserRole] = useState('');
@@ -67,28 +68,30 @@ export default function LaporanPage() {
       {/* <Container component="main" maxWidth="lg"> */}
 
         {userRole === 'admin' && <AdminSideBar/>} 
-        {userRole === 'kasir' && <KasirSideBar/>} 
+        {userRole === 'kasir' && <KasirSideBar/>}
 
+        <AppBarAtas/>
 
-        <Typography component="h1" variant="h5" align='center'>
-          Laporan Penjualan
-        </Typography>
         {isLoading ? (
           <CircularProgress /> 
         ) : (
           <Box
-            sx={{ m: 5, mt:2, border:'0px solid'  }}>
+            sx={{ m: 5, border:'0px solid'  }}>
+            <Typography sx={{ mt:9, mb:4 }} component="h1" variant="h5" align='center'>
+              Laporan Penjualan
+            </Typography>
+
             <MyDataGrid
               rows={ laporan }
               columns={[
                 {field : 'id', headerName: "No", width: 10},
-                {field : 'tgl_htrans', type: "dateTime", headerName: "Tanggal", width: 150},
+                {field : 'tgl_htrans', type: "dateTime", headerName: "Tanggal", width: 180},
                 {field : 'id_transaksi', type: "string",  headerName: "ID Transaksi", width: 180},
                 {field : 'id_barang', type: "string",  headerName: "ID Barang", width: 150},
-                {field : 'nama_barang', type: "string",  headerName: "Nama Barang", width: 250},
+                {field : 'nama_barang', type: "string",  headerName: "Nama Barang", width: 180},
                 {field : 'jumlah', type: "number",  headerName: "Jumlah", width: 80},
-                {field : 'harga', type: "number",  headerName: "Harga", width: 100},
-                {field : 'total', type: "number", headerName: "Total", width: 100},
+                {field : 'harga', type: "number",  headerName: "Harga", width: 80},
+                {field : 'total', type: "number", headerName: "Total", width: 80},
               ]}
             >
             </MyDataGrid>

@@ -5,6 +5,7 @@ import MyDataGrid from '../layouts/MyDataGrid';
 import {Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 
 import Box from '@mui/material/Box';
+import AppBarAtas from '../layouts/AppBarAtas';
 
 export default function AnalyticsMBAPage() {
   const [error, setError] = useState(null);
@@ -16,19 +17,14 @@ export default function AnalyticsMBAPage() {
   const [metricValue, setmetricValue] = useState()
   const [token, setToken] = useState("")
   const [dataMBA, setDataMBA] = useState([])
-
-  
-  // const handleFile = async (event) => {
-  //   setFile(event.target.files[0])
-  //   console.log(event.target.files[0])
-  // };
+  const [imageUrl, setImageUrl] = useState('');
 
   const handleUpload = async () => {
     // event.preventDefault();
 
-    console.log('support',support)
-    console.log('metric',metric)
-    console.log('metricValue',metricValue)
+    // console.log('support',support)
+    // console.log('metric',metric)
+    // console.log('metricValue',metricValue)
     // console.log(token);
     // console.log(file);
 
@@ -41,9 +37,9 @@ export default function AnalyticsMBAPage() {
     formData.append('metric',metric)
     formData.append('metric_value',metricValue)
 
-    for (var [key, value] of formData.entries()){
-      console.log(key,value);
-    }
+    // for (var [key, value] of formData.entries()){
+    //   console.log(key,value);
+    // }
 
     //GET ARM
     try {
@@ -53,7 +49,6 @@ export default function AnalyticsMBAPage() {
         body: formData,
         headers: {
           'authorization' : token
-        //   // 'Accept': "multipart/form-data",
         //   // 'Content-Type': 'application/json',
         //   'Content-Type': 'multipart/form-data',
         },
@@ -74,6 +69,14 @@ export default function AnalyticsMBAPage() {
           ...item,
         }));
         setDataMBA(dataMBAwID);
+
+        if (jsonData.rules_graph) {
+          setImageUrl(jsonData.rules_graph);
+        } else {
+          setImageUrl('');
+        }
+        // console.log(imageUrl)
+
         handleAlertClose();
         setIsLoading(false);
       // }
@@ -93,14 +96,14 @@ export default function AnalyticsMBAPage() {
 
   return (
 <>
-  <AdminSideBar>
-  </AdminSideBar>
+  <AdminSideBar></AdminSideBar>
   
     <Box
-    sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>        
+    sx={{ bgcolor: '', ml: 35, border:'0px solid'  }}>        
       {/* <Container component="main" maxWidth="lg"> */}
+        <AppBarAtas/>
 
-        <Typography component="h1" variant="h5" align='center'>
+        <Typography sx={{ mt:11, mb:4 }} component="h1" variant="h5" align='center'>
           Analytics
         </Typography>
         <Typography component="h4" align='left' my={4}>
@@ -207,10 +210,18 @@ export default function AnalyticsMBAPage() {
                     {field : 'antecedents', type: "string", headerName: "Antecedents", width: 400},
                     {field : 'consequents', type: "string",  headerName: "Consequents", width: 400},
                     {field : 'confidence', type: "number", headerName: "Confidence", width: 80},
-                    {field : 'lift', type: "number", headerName: "Lift", width: 80},                    
+                    {field : 'lift', type: "number", headerName: "Lift", width: 30},                    
+                    {field : 'count_on_transactions', type: "number", headerName: "Count on Trans", width: 80},
                   ]}
                 ></MyDataGrid>
               }
+
+              {imageUrl && (
+                <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                  <img src={imageUrl} alt="Visualization" style={{ maxWidth: '100%', maxHeight: '300px' }} />
+                </div>
+              )}
+
               {error && (
                 <div>
                   <p>Error: {error}</p>

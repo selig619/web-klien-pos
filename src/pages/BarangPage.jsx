@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react';
 
 import AdminSideBar from '../layouts/AdminSideBar';
+import AppBarAtas from '../layouts/AppBarAtas';
 import MyDataGrid from '../layouts/MyDataGrid';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import {Box,Typography, CircularProgress, Stack, TextField, Select, MenuItem, Button, Grid} from '@mui/material';
 
 import { useNavigate,BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -66,14 +69,15 @@ export default function BarangPage() {
     sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
     {/* <Container component="main" maxWidth="lg"> */}
 
-        <AdminSideBar>        
-        </AdminSideBar>
-        <Typography component="h1" variant="h5" align='center'>
-          Master Barang
-        </Typography>
+        <AdminSideBar/>
+
+        <AppBarAtas/>
 
         <Box
-          sx={{ m: 5, mt:2, border:'0px solid'  }}>
+          sx={{ m: 5, mt:10, border:'0px solid'  }}>
+            <Typography component="h1" variant="h5" align='center'>
+              Master Barang
+            </Typography>
 
             <Button
                 onClick={()=>{

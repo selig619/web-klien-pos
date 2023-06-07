@@ -6,6 +6,7 @@ import {Box, Typography, CircularProgress , Stack, TextField, Select, MenuItem, 
 // import { useSearchParams, , useLocation } from 'react-router-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
+import AppBarAtas from '../layouts/AppBarAtas';
 
 
 // const initVal = {
@@ -105,23 +106,23 @@ export default function BarangUpdatePage() {
 
 
   
-  return (
-  <>        
-    <AdminSideBar>        
-    </AdminSideBar>
+  return (  
     <Box
     sx={{ bgcolor: '', ml: 35, mt:2, border:'0px solid'  }}>
       {/* <Container component="main" maxWidth="lg"> */}
-
-        <Typography component="h1" variant="h5" align='center'>
-          Update Barang
-        </Typography>
 
         {loading ? (
         <CircularProgress />
         ) : (
           <Box
-            sx={{ m: 5, mt:2, border:'2px solid'  }}>
+            sx={{ m: 5, mt:2, border:'0px solid'  }}>
+            <AdminSideBar/>
+
+            <AppBarAtas/>
+
+            <Typography sx={{ mt:9, mb:4 }} component="h1" variant="h5" align='center'>
+              Update Barang
+            </Typography>
   
             <Box component="form" noValidate sx={{ mt: 1 }}>
             {/* <form onSubmit={handleSubmit}> */}
@@ -185,6 +186,5 @@ export default function BarangUpdatePage() {
         )}
 
     </Box>
-  </>
   )
 }

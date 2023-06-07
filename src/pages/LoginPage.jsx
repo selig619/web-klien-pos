@@ -72,44 +72,6 @@ export default function SignInPage() {
 
   };
 
-  const handleTest = async () => {
-    
-      //POST LOGIN
-      // await fetch(
-      //   "https://api-swalayan-brbk6zo3cq-as.a.run.app/login",
-      //   {
-      //     method:'POST',
-      //     body: JSON.stringify(user) ,
-      //     headers: {
-      //       'Accept': '*/*',
-      //       'Content-Type': 'application/json',
-      //     },
-      //   }      
-      // ).then(response=>response.json().then(
-      //   (data) => {
-      //         console.log(data);
-      //     })
-      // ).catch(err => {console.log(err)})
-
-          //GET LOGIN
-          // await fetch(
-          //   'https://flask-web-klien-brbk6zo3cq-uc.a.run.app/index',
-          //   {
-          //     method:'GET',
-          //     // body: user,
-          //     headers: {
-          //       'Content-Type': 'application/json',
-          //     },
-          //   }      
-          // ).then(response=>response.json()
-          // .then(
-          //   (data) => {
-          //         console.log(data);
-          //     })
-          // )
-  }
-
-
   return (
   <>
     {
@@ -119,15 +81,6 @@ export default function SignInPage() {
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            
-                {/* <Button
-                  onClick={handleTest}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  TEST ENDPOINT SEKARANGGGGGGGGGGG WKWKWKKWKW
-                </Button> */}
             <Box
               sx={{
                 marginTop: 8,
@@ -139,7 +92,10 @@ export default function SignInPage() {
               <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar>
-              <Typography component="h1" variant="h5">
+              <Typography sx={{ m: 1, }} component="h1" variant="h4">
+                Welcome to INDOJUNI
+              </Typography>
+              <Typography sx={{ m: 1, }} component="h5" variant="h5">
                 Sign in
               </Typography>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
