@@ -229,7 +229,7 @@ export default function AnalyticsMBAPage() {
                     {field : 'antecedents', type: "string", headerName: "Antecedents", width: 400},
                     {field : 'consequents', type: "string",  headerName: "Consequents", width: 400},
                     {field : 'confidence', type: "number", headerName: "Confidence", width: 80},
-                    {field : 'lift', type: "number", headerName: "Lift", width: 30},                    
+                    {field : 'lift', type: "number", headerName: "Lift", width: 80},                    
                     {field : 'count_on_transactions', type: "number", headerName: "Count on Trans", width: 80},
                   ]}
                 ></MyDataGrid>
