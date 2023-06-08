@@ -13,6 +13,7 @@ export default function AnalyticsMBAPage() {
 
   const [file, setFile] = useState(null)
   const [metric, setMetric] = useState("")
+  const [method, setMethod] = useState("")
   const [support, setSupport] = useState()
   const [metricValue, setmetricValue] = useState()
   const [token, setToken] = useState("")
@@ -32,7 +33,7 @@ export default function AnalyticsMBAPage() {
     const formData = new FormData()
     formData.append('file',file)
     formData.append('name','supermarket 1')
-    formData.append('method','apriori')
+    formData.append('method',method)
     formData.append('minSupp',support)
     formData.append('metric',metric)
     formData.append('metric_value',metricValue)
@@ -112,7 +113,7 @@ export default function AnalyticsMBAPage() {
 
         <div>
           <Grid container sx={{ border:'0px solid'}}>
-            <Grid item xs={6}   sx={{ border:'0px solid' }} >
+            <Grid item xs={4}   sx={{ border:'0px solid' }} >
               <Stack direction='row' sx={{ border:'0px solid' }} justifyContent={'center'} spacing={4}>
                 <Typography >Support</Typography> 
                 <TextField 
@@ -127,7 +128,7 @@ export default function AnalyticsMBAPage() {
               </Stack>
             </Grid>
 
-            <Grid item xs={6} sx={{ border:'0px solid' }} >
+            <Grid item xs={4} sx={{ border:'0px solid' }} >
               <Stack direction='row' justifyContent={'center'} spacing={4}>
                 <Select
                   labelId="demo-simple-select-label"
@@ -152,6 +153,24 @@ export default function AnalyticsMBAPage() {
               </Stack>
             </Grid>
 
+            
+            <Grid item xs={4} sx={{ border:'0px solid' }} >
+              <Stack direction='row' justifyContent={'center'} spacing={4}>
+                <Typography >Method (Algorithm)</Typography> 
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="Method"
+                  onChange={e => setMethod(e.target.value)}
+                >
+                    <MenuItem selected='True' value={'apriori'}>Apriori</MenuItem>
+                    <MenuItem value={'fpgrowth'}>FP-Growth</MenuItem>
+                </Select>
+              </Stack>
+            </Grid>
+
+            {/* FIELD TOKEN */}
             <Grid item p={5} sx={{ border:'0px solid' ,m:'auto', width:'100%' }} justifyContent={'center'}>
               {/* <Stack direction='row' justifyContent={'center'} spacing={4}> */}
                 <TextField sx={{ my: 'auto', mx:'auto', width:'90%' }}
